@@ -1,0 +1,53 @@
+POD
+
+apiVersion: v1
+kind: Pod
+metadata: 
+	name: my-pod
+spec:
+	containers:
+		- name: my-container
+		  image: nginx
+======================================================================
+SERVICE
+
+NODEPORT ===== > 
+
+apiVersion: v1
+kind: Service
+metadata: 
+	name: my-service
+spec:
+	selector:
+		app: my-pod
+	ports:
+		protocol: TCP
+		port: 80
+		targetPort: 8080
+		nodePort: 30020
+	type: NodePort
+
+==========================================================================
+DEPLOYMENT 
+
+apiVersion: v1
+kind: Deployment
+metadata: 
+	name: my-deployment
+spec:
+	replicas: 3
+	selector:
+		matchLabels:
+			app: my-pod
+	template:
+		selector:
+			labels:
+				app: my-pod
+		spec:
+			containers:
+			 - name: my-container
+			   image: nginx
+
+
+
+
